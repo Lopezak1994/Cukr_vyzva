@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cukr výzva</title>
+  <title>Měsíční výzva bez sladkého</title>
   <style>
     :root {
       --bg: #f0ebe3;
@@ -12,8 +12,9 @@
       --green-light: #aedfda;
       --red: #e05050;
       --today: #3b72d4;
+      --finish: #f0a500;
       --text: #222222;
-      --muted: #888888;
+      --muted: #999999;
       --radius: 14px;
     }
 
@@ -23,152 +24,152 @@
       background: var(--bg);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: var(--text);
-      padding: 28px 16px 48px;
+      padding: 28px 16px 56px;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .container { max-width: 820px; margin: 0 auto; }
 
-    /* Header */
-    header {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+    /* ── Header ─────────────────────────────────────────── */
+    header { text-align: center; margin-bottom: 28px; }
     header h1 { font-size: 1.9rem; font-weight: 700; }
     header .subtitle { color: var(--muted); margin-top: 5px; font-size: 0.95rem; }
 
-    /* Stat cards */
+    /* ── Stat cards ──────────────────────────────────────── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-    .stat-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 18px 16px;
-    }
-    .stat-card .label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
-    .stat-card .value { font-size: 2.2rem; font-weight: 700; line-height: 1; }
-    .stat-card .sub   { font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
-    .stat-card .streak{ font-size: 0.78rem; margin-top: 5px; }
+    .stat-card { background: var(--card); border-radius: var(--radius); padding: 18px 16px; }
+    .stat-card .label  { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
+    .stat-card .value  { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+    .stat-card .sub    { font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
+    .stat-card .streak { font-size: 0.78rem; margin-top: 5px; }
 
-    /* Progress */
+    /* ── Progress ────────────────────────────────────────── */
     .progress-section {
       background: var(--card);
       border-radius: var(--radius);
       padding: 16px 20px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .progress-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-bottom: 10px;
+      display: flex; justify-content: space-between;
+      font-size: 0.9rem; font-weight: 500; margin-bottom: 10px;
     }
-    .progress-track {
-      background: #e5dfd7;
-      border-radius: 999px;
-      height: 8px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      background: var(--green);
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.6s ease;
-    }
+    .progress-track { background: #e5dfd7; border-radius: 999px; height: 8px; overflow: hidden; }
+    .progress-fill  { background: var(--green); height: 100%; border-radius: 999px; transition: width 0.6s ease; }
 
-    /* Player cards */
+    /* ── Quote card ──────────────────────────────────────── */
+    .quote-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-left: 4px solid var(--green);
+    }
+    .quote-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .quote-text { font-size: 0.9rem; font-style: italic; color: #444; line-height: 1.5; }
+    .quote-author { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
+    /* ── Player cards ────────────────────────────────────── */
     .players-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
     }
-    .player-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 22px 20px;
-    }
-    .player-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+    .player-card { background: var(--card); border-radius: var(--radius); padding: 22px 20px; }
+    .player-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
     .avatar {
-      width: 42px; height: 42px;
-      border-radius: 50%;
+      width: 42px; height: 42px; border-radius: 50%;
       background: #ddd6f0;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.8rem; color: #6b56b0;
-      flex-shrink: 0;
+      font-weight: 700; font-size: 0.8rem; color: #6b56b0; flex-shrink: 0;
     }
-    .player-name  { font-weight: 600; font-size: 1rem; }
-    .player-rate  { font-size: 0.8rem; color: var(--muted); margin-top: 1px; }
+    .player-name { font-weight: 600; font-size: 1rem; }
+    .player-rate { font-size: 0.8rem; color: var(--muted); margin-top: 1px; }
 
     .player-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-      text-align: center;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-bottom: 16px; text-align: center;
     }
-    .pstat-val      { font-size: 1.6rem; font-weight: 700; color: var(--green); }
-    .pstat-val.red  { color: var(--red); }
-    .pstat-lbl      { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    .pstat-val     { font-size: 1.6rem; font-weight: 700; color: var(--green); }
+    .pstat-val.red { color: var(--red); }
+    .pstat-lbl     { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
 
     .btn {
       display: flex; align-items: center; justify-content: center; gap: 6px;
       width: 100%; padding: 10px;
-      border: 1.5px solid #d8d0c6;
-      border-radius: 9px;
-      background: transparent;
-      font-size: 0.85rem; color: var(--text);
-      text-decoration: none;
-      cursor: pointer;
+      border: 1.5px solid #d8d0c6; border-radius: 9px;
+      background: transparent; font-size: 0.85rem; color: var(--text);
+      text-decoration: none; cursor: pointer;
     }
     .btn:hover { background: #f5f0ea; }
 
-    /* Calendar */
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .calendar-header h2 { font-size: 1rem; font-weight: 600; }
+    /* ── Calendar ────────────────────────────────────────── */
+    .calendar-section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; }
 
-    .legend {
-      display: flex; gap: 14px;
+    .calendar-legend {
+      display: flex; gap: 14px; flex-wrap: wrap;
       font-size: 0.75rem; color: var(--muted);
+      margin-bottom: 20px;
     }
     .legend-item { display: flex; align-items: center; gap: 5px; }
     .legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-    .calendar-grid {
+    .months-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .month-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .month-title {
+      font-size: 0.9rem; font-weight: 600;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .month-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+      gap: 4px;
     }
+
+    .wd {
+      text-align: center; font-size: 0.65rem;
+      font-weight: 600; color: var(--muted);
+      padding-bottom: 4px;
+    }
+
     .day {
       aspect-ratio: 1;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; font-weight: 500;
-      background: #e5dfd7; color: var(--muted);
+      border-radius: 8px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 500;
     }
-    .day.both   { background: var(--green); color: #fff; }
-    .day.one    { background: var(--green-light); color: var(--text); }
-    .day.fail   { background: #fde8e8; color: var(--red); }
-    .day.today  { background: #fff; color: var(--text); border: 2.5px solid var(--today); }
+    .day.empty       { background: transparent; }
+    .day.out-range   { background: transparent; color: #ccc; font-size: 0.75rem; }
+    .day.future      { background: #e8e2da; color: var(--muted); }
+    .day.both        { background: var(--green); color: #fff; }
+    .day.one         { background: var(--green-light); color: var(--text); }
+    .day.fail        { background: #fde8e8; color: var(--red); }
+    .day.today       { background: #fff; color: var(--text); border: 2.5px solid var(--today); font-weight: 700; }
+    .day.finish      { background: #fff8e6; color: var(--finish); border: 2.5px solid var(--finish); font-weight: 700; }
+    .day .day-emoji  { font-size: 0.6rem; line-height: 1; margin-top: 1px; }
 
-    /* Loading / error */
+    /* ── Loading / error ─────────────────────────────────── */
     #app.loading { text-align: center; padding: 80px 0; color: var(--muted); font-size: 1.1rem; }
     #app.error   { text-align: center; padding: 60px 20px; }
     .error-box   { background: #fff; border-radius: var(--radius); padding: 32px; display: inline-block; max-width: 500px; }
@@ -179,7 +180,7 @@
     @media (max-width: 640px) {
       .stats-grid   { grid-template-columns: repeat(2, 1fr); }
       .players-grid { grid-template-columns: 1fr; }
-      .calendar-grid{ grid-template-columns: repeat(5, 1fr); }
+      .months-grid  { grid-template-columns: 1fr; }
       header h1     { font-size: 1.5rem; }
     }
   </style>
@@ -190,18 +191,46 @@
 </div>
 
 <script>
-// ─── KONFIGURACE ────────────────────────────────────────────────────────────
-// Vyplňte ID vašeho Google Sheetu (část URL mezi /d/ a /edit)
+// ─── KONFIGURACE ─────────────────────────────────────────────────────────────
 const SHEET_ID = '1pRd1rCylamJtQV20x3LvAmAV6LlbLaYNvBMWzepXRu4';
-// ────────────────────────────────────────────────────────────────────────────
 
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+// Přejmenování hráčů (klíč = název sloupce v sheetu, hodnota = zobrazované jméno)
+const NAME_OVERRIDES = {
+  'Ty': 'Honza'
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CSV_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 
 const DAYS_CS   = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
 const MONTHS_CS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
+const MONTHS_FULL = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'];
 
-// ─── CSV parsing ────────────────────────────────────────────────────────────
+const QUOTES = [
+  { text: "Každý den bez cukru je investice do tvého zdraví.", author: "" },
+  { text: "Síla vůle je jako sval — čím víc ji trénuješ, tím silnější je.", author: "" },
+  { text: "Nejlepší čas začít byl včera. Druhý nejlepší čas je teď.", author: "Čínské přísloví" },
+  { text: "Úspěch není konečný, neúspěch není fatální — záleží na odvaze pokračovat.", author: "W. Churchill" },
+  { text: "Malé kroky vpřed jsou stále kroky vpřed.", author: "" },
+  { text: "Tvé tělo slyší vše, co mu říká tvá mysl.", author: "" },
+  { text: "Disciplína je most mezi cílem a jeho dosažením.", author: "Jim Rohn" },
+  { text: "Změna začíná ve chvíli, kdy se rozhodneš, že se chceš změnit.", author: "" },
+  { text: "Co jíš v soukromí se ukazuje na veřejnosti.", author: "" },
+  { text: "Výzva tě formuje. Vydržet je vítězství samo o sobě.", author: "" },
+  { text: "Každé ráno je nová šance být lepší verzí sebe.", author: "" },
+  { text: "Nemusíš být skvělý, abys začal. Ale musíš začít, abys byl skvělý.", author: "Zig Ziglar" },
+  { text: "Tvoje budoucí já ti poděkuje za dnešní rozhodnutí.", author: "" },
+  { text: "Zdraví není všechno, ale bez zdraví je všechno ničím.", author: "A. Schopenhauer" },
+  { text: "Cesta tisíce mil začíná jedním krokem.", author: "Lao-c'" },
+  { text: "Nejdůležitější věc je nepřestat se ptát.", author: "A. Einstein" },
+  { text: "Vytrvalost překonává vše.", author: "" },
+  { text: "Radost neplyne z toho, co máš, ale z toho, kým jsi.", author: "" },
+  { text: "Každý prohřešek je jen odbočka, ne konec cesty.", author: "" },
+  { text: "Silná vůle je tichý hrdina každodenního života.", author: "" },
+];
+
+// ─── CSV parsing ──────────────────────────────────────────────────────────────
 function parseLine(line) {
   const out = []; let cur = '', q = false;
   for (let i = 0; i < line.length; i++) {
@@ -216,12 +245,9 @@ function parseLine(line) {
 function parseDate(str) {
   str = (str || '').replace(/"/g,'').trim();
   let m;
-  if ((m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)))
-    return new Date(+m[1], +m[2]-1, +m[3]);
-  if ((m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)))
-    return new Date(+m[3], +m[1]-1, +m[2]);
-  if ((m = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/)))
-    return new Date(+m[3], +m[2]-1, +m[1]);
+  if ((m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)))  return new Date(+m[1], +m[2]-1, +m[3]);
+  if ((m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) return new Date(+m[3], +m[1]-1, +m[2]);
+  if ((m = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/))) return new Date(+m[3], +m[2]-1, +m[1]);
   return null;
 }
 
@@ -229,11 +255,15 @@ function dateKey(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+function resolveName(raw) {
+  return NAME_OVERRIDES[raw] || raw;
+}
+
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = parseLine(lines[0]);
-  const p1Name = headers[1] || 'Ty';
-  const p2Name = headers[2] || 'Petr';
+  const p1Name = resolveName(headers[1] || 'Hráč 1');
+  const p2Name = resolveName(headers[2] || 'Hráč 2');
 
   const rows = lines.slice(1).map(line => {
     const v = parseLine(line);
@@ -245,11 +275,9 @@ function parseCSV(text) {
   return { p1Name, p2Name, rows };
 }
 
-// ─── Statistics ──────────────────────────────────────────────────────────────
-function stats(rows, playerKey, today) {
+// ─── Statistics ───────────────────────────────────────────────────────────────
+function calcStats(rows, playerKey, today) {
   let clean = 0, fail = 0, streak = 0, inStreak = true;
-
-  // Go backwards from today to compute streak
   const past = rows.filter(r => r.date < today).sort((a,b) => b.date - a.date);
   for (const r of past) {
     if (r[playerKey] === '1') { if (inStreak) streak++; clean++; }
@@ -259,26 +287,104 @@ function stats(rows, playerKey, today) {
   return { clean, fail, streak, rate: total > 0 ? Math.round(clean/total*100) : null };
 }
 
+// ─── Calendar ─────────────────────────────────────────────────────────────────
+function renderCalendar(rows, today, todayKey) {
+  const dataMap = {};
+  rows.forEach(r => { dataMap[r.key] = r; });
+
+  const challengeStart = rows[0].date;
+  const challengeEnd   = rows[rows.length - 1].date;
+  const finishKey      = dateKey(challengeEnd);
+
+  // Collect unique year-month pairs
+  const seen = new Set();
+  const months = [];
+  rows.forEach(r => {
+    const k = `${r.date.getFullYear()}-${r.date.getMonth()}`;
+    if (!seen.has(k)) { seen.add(k); months.push(new Date(r.date.getFullYear(), r.date.getMonth(), 1)); }
+  });
+
+  return months.map(ms => renderMonth(ms, dataMap, today, todayKey, challengeStart, challengeEnd, finishKey)).join('');
+}
+
+function renderMonth(monthStart, dataMap, today, todayKey, challengeStart, challengeEnd, finishKey) {
+  const year = monthStart.getFullYear();
+  const month = monthStart.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDow = (new Date(year, month, 1).getDay() + 6) % 7; // 0=Mon
+
+  const WD = ['Po','Út','St','Čt','Pá','So','Ne'];
+  let cells = WD.map(d => `<div class="wd">${d}</div>`).join('');
+
+  for (let i = 0; i < firstDow; i++) cells += `<div class="day empty"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    const key  = dateKey(date);
+    const inChallenge = date >= challengeStart && date <= challengeEnd;
+
+    if (!inChallenge) {
+      cells += `<div class="day out-range">${d}</div>`;
+      continue;
+    }
+
+    if (key === finishKey) {
+      cells += `<div class="day finish" title="Konec výzvy — dnes si dáme sladké!">${d}<span class="day-emoji">🎉</span></div>`;
+      continue;
+    }
+
+    if (key === todayKey) {
+      cells += `<div class="day today">${d}</div>`;
+      continue;
+    }
+
+    if (date > today) {
+      cells += `<div class="day future">${d}</div>`;
+      continue;
+    }
+
+    const row = dataMap[key];
+    const b1 = row?.p1 === '1', b2 = row?.p2 === '1';
+    if (b1 && b2)      cells += `<div class="day both">${d}</div>`;
+    else if (b1 || b2) cells += `<div class="day one">${d}</div>`;
+    else               cells += `<div class="day fail">${d}</div>`;
+  }
+
+  return `
+    <div class="month-card">
+      <div class="month-title">${MONTHS_FULL[month]} ${year}</div>
+      <div class="month-grid">${cells}</div>
+    </div>`;
+}
+
+// ─── Quote of the day ─────────────────────────────────────────────────────────
+function todaysQuote(challengeDay) {
+  const idx = (challengeDay - 1 + QUOTES.length) % QUOTES.length;
+  return QUOTES[idx];
+}
+
 // ─── Render ───────────────────────────────────────────────────────────────────
 function render({ p1Name, p2Name, rows }) {
-  const today = new Date(); today.setHours(0,0,0,0);
+  const today    = new Date(); today.setHours(0,0,0,0);
   const todayKey = dateKey(today);
 
-  const totalDays = rows.length;
+  const totalDays    = rows.length;
   const challengeDay = rows.filter(r => r.date <= today).length;
   const daysLeft     = rows.filter(r => r.date > today).length;
   const progress     = totalDays > 0 ? Math.round(challengeDay / totalDays * 100) : 0;
 
-  const s1 = stats(rows, 'p1', today);
-  const s2 = stats(rows, 'p2', today);
+  const s1 = calcStats(rows, 'p1', today);
+  const s2 = calcStats(rows, 'p2', today);
 
-  const dayName  = DAYS_CS[today.getDay()];
-  const dateStr  = `${today.getDate()}. ${MONTHS_CS[today.getMonth()]}`;
+  const dayName = DAYS_CS[today.getDay()];
+  const dateStr = `${today.getDate()}. ${MONTHS_CS[today.getMonth()]}`;
+
+  const quote = todaysQuote(challengeDay);
 
   document.getElementById('app').className = '';
   document.getElementById('app').innerHTML = `
     <header>
-      <h1>🥗 Bez sladkého — ${totalDays} dní</h1>
+      <h1>🥗 Měsíční výzva bez sladkého</h1>
       <div class="subtitle">Dnes: ${dayName} ${dateStr}</div>
     </header>
 
@@ -315,22 +421,29 @@ function render({ p1Name, p2Name, rows }) {
       </div>
     </div>
 
+    <div class="quote-card">
+      <div class="quote-icon">💬</div>
+      <div>
+        <div class="quote-text">„${quote.text}"</div>
+        ${quote.author ? `<div class="quote-author">— ${quote.author}</div>` : ''}
+      </div>
+    </div>
+
     <div class="players-grid">
-      ${playerCard(p1Name, s1, `Označit svůj dnešek`)}
+      ${playerCard(p1Name, s1, 'Označit svůj dnešek')}
       ${playerCard(p2Name, s2, `Označit ${p2Name}ův dnešek`)}
     </div>
 
     <div class="calendar-section">
-      <div class="calendar-header">
-        <h2>Přehled — ${totalDays} dní</h2>
-        <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> oba čistí</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--green-light)"></div> jeden čistý</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> prohřešek</div>
-        </div>
+      <h2>Přehled výzvy</h2>
+      <div class="calendar-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> oba čistí</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green-light); border:1px solid #ccc"></div> jeden čistý</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fde8e8; border:1px solid var(--red)"></div> prohřešek</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fff8e6; border:1px solid var(--finish)"></div> 🎉 konec výzvy</div>
       </div>
-      <div class="calendar-grid">
-        ${rows.map((r,i) => dayCell(r, i+1, today, todayKey)).join('')}
+      <div class="months-grid">
+        ${renderCalendar(rows, today, todayKey)}
       </div>
     </div>
   `;
@@ -338,7 +451,7 @@ function render({ p1Name, p2Name, rows }) {
 
 function playerCard(name, s, btnLabel) {
   const rateText = s.rate !== null ? `${s.rate} % úspěšnost` : 'zatím bez záznamu';
-  const initials = name.substring(0,2).toUpperCase();
+  const initials = name.substring(0, 2).toUpperCase();
   return `
     <div class="player-card">
       <div class="player-header">
@@ -349,38 +462,15 @@ function playerCard(name, s, btnLabel) {
         </div>
       </div>
       <div class="player-stats">
-        <div>
-          <div class="pstat-val">${s.clean}</div>
-          <div class="pstat-lbl">bez sladkého</div>
-        </div>
-        <div>
-          <div class="pstat-val ${s.fail > 0 ? 'red' : ''}">${s.fail}</div>
-          <div class="pstat-lbl">prohřešků</div>
-        </div>
-        <div>
-          <div class="pstat-val">${s.streak}</div>
-          <div class="pstat-lbl">série dnů</div>
-        </div>
+        <div><div class="pstat-val">${s.clean}</div><div class="pstat-lbl">bez sladkého</div></div>
+        <div><div class="pstat-val ${s.fail > 0 ? 'red' : ''}">${s.fail}</div><div class="pstat-lbl">prohřešků</div></div>
+        <div><div class="pstat-val">${s.streak}</div><div class="pstat-lbl">série dnů</div></div>
       </div>
       <a href="${SHEET_URL}" target="_blank" class="btn">⊙ ${btnLabel}</a>
-    </div>
-  `;
+    </div>`;
 }
 
-function dayCell(row, n, today, todayKey) {
-  let cls = 'day';
-  if (row.key === todayKey) {
-    cls += ' today';
-  } else if (row.date < today) {
-    const b1 = row.p1 === '1', b2 = row.p2 === '1';
-    if (b1 && b2) cls += ' both';
-    else if (b1 || b2) cls += ' one';
-    else cls += ' fail';
-  }
-  return `<div class="${cls}">${n}</div>`;
-}
-
-// ─── Error screen ─────────────────────────────────────────────────────────────
+// ─── Error ────────────────────────────────────────────────────────────────────
 function showError(msg) {
   document.getElementById('app').className = 'error';
   document.getElementById('app').innerHTML = `
@@ -390,26 +480,19 @@ function showError(msg) {
       <p style="margin-top:12px">
         Zkontrolujte:<br>
         1. <code>SHEET_ID</code> v kódu stránky<br>
-        2. Sheet je sdílen jako <em>Kdokoli s odkazem může zobrazit</em><br>
-        3. Sheet je publikován: <em>Soubor → Sdílet → Publikovat na webu → CSV</em>
+        2. Sheet je sdílen jako <em>Kdokoli s odkazem může zobrazit</em>
       </p>
-    </div>
-  `;
+    </div>`;
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
-  if (SHEET_ID === 'YOUR_SHEET_ID_HERE') {
-    showError('Nevyplněno <code>SHEET_ID</code>. Otevřete <code>index.html</code> a doplňte ID vašeho Google Sheetu.');
-    return;
-  }
   try {
     const resp = await fetch(CSV_URL);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
-    if (text.includes('UNAUTHENTICATED') || text.includes('Sign in')) {
+    if (text.includes('UNAUTHENTICATED') || text.includes('Sign in'))
       throw new Error('Sheet není veřejně přístupný.');
-    }
     render(parseCSV(text));
   } catch (e) {
     showError(`Nepodařilo se načíst data. ${e.message}`);
