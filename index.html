@@ -1,606 +1,422 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bez sladkého — 30 dní</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cukr výzva</title>
+  <style>
+    :root {
+      --bg: #f0ebe3;
+      --card: #ffffff;
+      --green: #5ab5a5;
+      --green-light: #aedfda;
+      --red: #e05050;
+      --today: #3b72d4;
+      --text: #222222;
+      --muted: #888888;
+      --radius: 14px;
+    }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --green: #1D9E75;
-    --green-light: #E1F5EE;
-    --green-dark: #085041;
-    --red: #D85A30;
-    --red-light: #FAECE7;
-    --red-dark: #4A1B0C;
-    --blue: #378ADD;
-    --blue-light: #E6F1FB;
-    --blue-dark: #042C53;
-    --purple: #534AB7;
-    --purple-light: #EEEDFE;
-    --purple-dark: #26215C;
-    --gray-50: #F8F7F4;
-    --gray-100: #EFEFEB;
-    --gray-200: #D3D1C7;
-    --gray-400: #888780;
-    --gray-600: #5F5E5A;
-    --gray-900: #1A1A18;
-    --text: #1A1A18;
-    --text-muted: #5F5E5A;
-    --text-hint: #888780;
-    --border: rgba(0,0,0,0.1);
-    --border-strong: rgba(0,0,0,0.18);
-    --bg: #F4F2ED;
-    --surface: #FFFFFF;
-    --radius: 10px;
-    --radius-lg: 16px;
-  }
+    body {
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      padding: 28px 16px 48px;
+    }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem 4rem;
-  }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-  .container { max-width: 720px; margin: 0 auto; }
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    header h1 { font-size: 1.9rem; font-weight: 700; }
+    header .subtitle { color: var(--muted); margin-top: 5px; font-size: 0.95rem; }
 
-  .page-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    padding-top: 1rem;
-  }
-  .page-header .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    background: var(--gray-100);
-    border: 0.5px solid var(--border-strong);
-    border-radius: 20px;
-    padding: 4px 12px;
-    margin-bottom: 14px;
-  }
-  .page-header h1 {
-    font-size: 32px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .page-header p {
-    font-size: 15px;
-    color: var(--text-muted);
-  }
+    /* Stat cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+    }
+    .stat-card .label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
+    .stat-card .value { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+    .stat-card .sub   { font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
+    .stat-card .streak{ font-size: 0.78rem; margin-top: 5px; }
 
-  .config-box {
-    background: var(--surface);
-    border: 0.5px solid var(--border-strong);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  .config-box h2 {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .config-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .config-row label { font-size: 14px; color: var(--text-muted); white-space: nowrap; }
-  .config-row input[type="text"] {
-    flex: 1;
-    min-width: 200px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    padding: 8px 12px;
-    border: 0.5px solid var(--border-strong);
-    border-radius: var(--radius);
-    background: var(--gray-50);
-    color: var(--text);
-    outline: none;
-  }
-  .config-row input[type="text"]:focus { border-color: var(--blue); }
-  .btn {
-    padding: 8px 18px;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border: 0.5px solid var(--border-strong);
-    background: var(--text);
-    color: white;
-    transition: opacity 0.15s;
-  }
-  .btn:hover { opacity: 0.85; }
-  .btn-outline {
-    background: transparent;
-    color: var(--text);
-  }
-  .btn-outline:hover { background: var(--gray-100); }
+    /* Progress */
+    .progress-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .progress-track {
+      background: #e5dfd7;
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: var(--green);
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
 
-  .status-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    font-size: 13px;
-  }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-200); flex-shrink: 0; }
-  .dot.ok { background: var(--green); }
-  .dot.err { background: var(--red); }
-  .dot.loading { background: var(--blue); animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    /* Player cards */
+    .players-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .player-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+    }
+    .player-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #ddd6f0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.8rem; color: #6b56b0;
+      flex-shrink: 0;
+    }
+    .player-name  { font-weight: 600; font-size: 1rem; }
+    .player-rate  { font-size: 0.8rem; color: var(--muted); margin-top: 1px; }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-  @media(max-width:560px){ .stats-grid { grid-template-columns: repeat(2,1fr); } }
-  .stat-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-  }
-  .stat-card .label { font-size: 11px; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-  .stat-card .value { font-size: 26px; font-weight: 600; color: var(--text); font-family: 'DM Mono', monospace; }
-  .stat-card .sub { font-size: 12px; color: var(--text-hint); margin-top: 2px; }
+    .player-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .pstat-val      { font-size: 1.6rem; font-weight: 700; color: var(--green); }
+    .pstat-val.red  { color: var(--red); }
+    .pstat-lbl      { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
 
-  .progress-wrap { margin-bottom: 1.5rem; }
-  .progress-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: var(--text-muted); }
-  .progress-track { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.6s ease; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; padding: 10px;
+      border: 1.5px solid #d8d0c6;
+      border-radius: 9px;
+      background: transparent;
+      font-size: 0.85rem; color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: #f5f0ea; }
 
-  .players-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
-  @media(max-width:480px){ .players-grid { grid-template-columns: 1fr; } }
+    /* Calendar */
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .calendar-header h2 { font-size: 1rem; font-weight: 600; }
 
-  .player-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem;
-    transition: border-color 0.2s;
-  }
-  .player-card.leading { border-color: var(--green); border-width: 1.5px; }
+    .legend {
+      display: flex; gap: 14px;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-  .player-head { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
-  .avatar {
-    width: 38px; height: 38px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; flex-shrink: 0;
-  }
-  .avatar-t { background: var(--blue-light); color: var(--blue-dark); }
-  .avatar-p { background: var(--purple-light); color: var(--purple-dark); }
-  .player-name { font-size: 16px; font-weight: 500; }
-  .player-pct { font-size: 12px; color: var(--text-muted); }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .day {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 500;
+      background: #e5dfd7; color: var(--muted);
+    }
+    .day.both   { background: var(--green); color: #fff; }
+    .day.one    { background: var(--green-light); color: var(--text); }
+    .day.fail   { background: #fde8e8; color: var(--red); }
+    .day.today  { background: #fff; color: var(--text); border: 2.5px solid var(--today); }
 
-  .mini-stats { display: flex; gap: 8px; margin-bottom: 1rem; }
-  .mini-stat { flex: 1; background: var(--gray-50); border-radius: 8px; padding: 8px; text-align: center; }
-  .mini-num { font-size: 20px; font-weight: 600; font-family: 'DM Mono', monospace; }
-  .mini-num.green { color: var(--green); }
-  .mini-num.red { color: var(--red); }
-  .mini-lbl { font-size: 10px; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+    /* Loading / error */
+    #app.loading { text-align: center; padding: 80px 0; color: var(--muted); font-size: 1.1rem; }
+    #app.error   { text-align: center; padding: 60px 20px; }
+    .error-box   { background: #fff; border-radius: var(--radius); padding: 32px; display: inline-block; max-width: 500px; }
+    .error-box h2 { color: var(--red); margin-bottom: 10px; }
+    .error-box p  { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .error-box code { background: #f5f0ea; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
 
-  .streak-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--green-light); color: var(--green-dark);
-    font-size: 12px; font-weight: 500;
-    padding: 4px 10px; border-radius: 20px;
-  }
-
-  .calendar-section { margin-bottom: 1.5rem; }
-  .section-title {
-    font-size: 12px; font-weight: 500; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.07em;
-    margin-bottom: 10px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .legend { display: flex; gap: 12px; }
-  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-hint); }
-  .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
-
-  .cal-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; }
-  @media(max-width:480px){ .cal-grid { grid-template-columns: repeat(6,1fr); } }
-
-  .cal-day {
-    aspect-ratio: 1;
-    border-radius: 6px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    font-size: 10px;
-    font-family: 'DM Mono', monospace;
-    border: 0.5px solid var(--border);
-    background: var(--gray-100);
-    color: var(--text-hint);
-    position: relative;
-    transition: transform 0.1s;
-  }
-  .cal-day.both-clean { background: var(--green); border-color: var(--green); color: white; }
-  .cal-day.one-clean { background: #9FE1CB; border-color: #5DCAA5; color: var(--green-dark); }
-  .cal-day.has-cheat { background: var(--red-light); border-color: #F0997B; color: var(--red); }
-  .cal-day.is-today { box-shadow: 0 0 0 2px var(--blue); }
-  .cal-day .day-num { font-size: 11px; font-weight: 500; }
-  .cal-day .day-icons { font-size: 8px; letter-spacing: 1px; margin-top: 1px; }
-
-  .error-box {
-    background: var(--red-light);
-    border: 0.5px solid #F0997B;
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    font-size: 14px;
-    color: var(--red-dark);
-    margin-bottom: 1.5rem;
-    display: none;
-  }
-
-  .footer {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-hint);
-    margin-top: 2rem;
-  }
-  .mono { font-family: 'DM Mono', monospace; }
-
-  .hidden { display: none !important; }
-</style>
+    @media (max-width: 640px) {
+      .stats-grid   { grid-template-columns: repeat(2, 1fr); }
+      .players-grid { grid-template-columns: 1fr; }
+      .calendar-grid{ grid-template-columns: repeat(5, 1fr); }
+      header h1     { font-size: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-
-  <div class="page-header">
-    <div class="badge">30denní výzva</div>
-    <h1>🥗 Bez sladkého</h1>
-    <p id="header-sub">Načítání…</p>
-  </div>
-
-  <div class="config-box">
-    <h2>⚙️ Nastavení — Google Sheets CSV</h2>
-    <div class="config-row">
-      <label>CSV URL:</label>
-      <input type="text" id="csv-url" placeholder="Vlož sem URL publikované tabulky jako CSV…" />
-      <button class="btn" onclick="loadCSV()">Načíst</button>
-    </div>
-    <div class="status-bar">
-      <div class="dot" id="status-dot"></div>
-      <span id="status-text" style="color:var(--text-hint)">Zadej URL tabulky a klikni Načíst</span>
-      <button class="btn btn-outline" id="btn-refresh" style="margin-left:auto;padding:4px 12px;font-size:12px;display:none" onclick="loadCSV()">↻ Obnovit</button>
-    </div>
-  </div>
-
-  <div id="error-box" class="error-box"></div>
-
-  <div id="main-content" class="hidden">
-
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="label">Den výzvy</div>
-        <div class="value mono" id="s-day">—</div>
-        <div class="sub">z 30</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Zbývá dnů</div>
-        <div class="value mono" id="s-left">—</div>
-        <div class="sub">do konce</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Ty — série</div>
-        <div class="value mono" id="s-t-streak" style="color:var(--blue)">—</div>
-        <div class="sub">dnů v řadě</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Petr — série</div>
-        <div class="value mono" id="s-p-streak" style="color:var(--purple)">—</div>
-        <div class="sub">dnů v řadě</div>
-      </div>
-    </div>
-
-    <div class="progress-wrap">
-      <div class="progress-top">
-        <span>Průběh výzvy</span>
-        <span id="s-pct">0 %</span>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    </div>
-
-    <div class="players-grid">
-      <div class="player-card" id="card-t">
-        <div class="player-head">
-          <div class="avatar avatar-t">TY</div>
-          <div>
-            <div class="player-name">Ty</div>
-            <div class="player-pct" id="t-pct">—</div>
-          </div>
-        </div>
-        <div class="mini-stats">
-          <div class="mini-stat"><div class="mini-num green" id="t-clean">—</div><div class="mini-lbl">čistých</div></div>
-          <div class="mini-stat"><div class="mini-num red" id="t-cheat">—</div><div class="mini-lbl">prohřešků</div></div>
-          <div class="mini-stat"><div class="mini-num" id="t-missing">—</div><div class="mini-lbl">bez záznamu</div></div>
-        </div>
-        <div class="streak-badge" id="t-streak-badge">🔥 <span id="t-streak-txt">0 dnů v řadě</span></div>
-      </div>
-      <div class="player-card" id="card-p">
-        <div class="player-head">
-          <div class="avatar avatar-p">PE</div>
-          <div>
-            <div class="player-name">Petr</div>
-            <div class="player-pct" id="p-pct">—</div>
-          </div>
-        </div>
-        <div class="mini-stats">
-          <div class="mini-stat"><div class="mini-num green" id="p-clean">—</div><div class="mini-lbl">čistých</div></div>
-          <div class="mini-stat"><div class="mini-num red" id="p-cheat">—</div><div class="mini-lbl">prohřešků</div></div>
-          <div class="mini-stat"><div class="mini-num" id="p-missing">—</div><div class="mini-lbl">bez záznamu</div></div>
-        </div>
-        <div class="streak-badge" id="p-streak-badge">🔥 <span id="p-streak-txt">0 dnů v řadě</span></div>
-      </div>
-    </div>
-
-    <div class="calendar-section">
-      <div class="section-title">
-        Přehled 30 dnů
-        <div class="legend">
-          <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>oba ✓</div>
-          <div class="leg"><div class="leg-dot" style="background:#9FE1CB"></div>jeden ✓</div>
-          <div class="leg"><div class="leg-dot" style="background:var(--red-light);border:1px solid #F0997B"></div>prohřešek</div>
-        </div>
-      </div>
-      <div class="cal-grid" id="calendar"></div>
-    </div>
-
-  </div><!-- end main-content -->
-
-  <div class="footer">
-    Data se čtou z Google Sheets · <span id="last-update">—</span>
-  </div>
-
+  <div id="app" class="loading">Načítám data…</div>
 </div>
 
 <script>
-const START_DATE = new Date();
-START_DATE.setHours(0,0,0,0);
-const DAYS = 30;
-const STORAGE_URL_KEY = 'sugar_csv_url';
+// ─── KONFIGURACE ────────────────────────────────────────────────────────────
+// Vyplňte ID vašeho Google Sheetu (část URL mezi /d/ a /edit)
+const SHEET_ID = '1pRd1rCylamJtQV20x3LvAmAV6LlbLaYNvBMWzepXRu4';
+// ────────────────────────────────────────────────────────────────────────────
 
-function today() { const d = new Date(); d.setHours(0,0,0,0); return d; }
-function dateKey(d) { return d.toISOString().slice(0,10); }
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 
-function daysBetween(a, b) {
-  return Math.floor((b - a) / 86400000);
-}
+const DAYS_CS   = ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'];
+const MONTHS_CS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
 
-function setStatus(state, msg) {
-  const dot = document.getElementById('status-dot');
-  const txt = document.getElementById('status-text');
-  dot.className = 'dot ' + state;
-  txt.textContent = msg;
-  txt.style.color = state === 'err' ? 'var(--red)' : state === 'ok' ? 'var(--green-dark)' : 'var(--text-hint)';
-}
-
-function showError(msg) {
-  const el = document.getElementById('error-box');
-  el.style.display = 'block';
-  el.textContent = '⚠️ ' + msg;
-}
-function clearError() {
-  document.getElementById('error-box').style.display = 'none';
-}
-
-async function fetchWithFallback(url) {
-  const proxies = [
-    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
-    u => 'https://corsproxy.io/?' + encodeURIComponent(u),
-    u => 'https://cors-anywhere.herokuapp.com/' + u,
-  ];
-  // First try direct (works sometimes from local file)
-  try {
-    const res = await fetch(url, { mode: 'cors' });
-    if (res.ok) return await res.text();
-  } catch(e) {}
-
-  for (const proxy of proxies) {
-    try {
-      const res = await fetch(proxy(url));
-      if (res.ok) {
-        const text = await res.text();
-        if (text && text.length > 10) return text;
-      }
-    } catch(e) {}
+// ─── CSV parsing ────────────────────────────────────────────────────────────
+function parseLine(line) {
+  const out = []; let cur = '', q = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') { q = !q; continue; }
+    if (line[i] === ',' && !q) { out.push(cur.trim()); cur = ''; continue; }
+    cur += line[i];
   }
-  throw new Error('Všechny proxy selhaly');
+  out.push(cur.trim());
+  return out;
 }
 
-async function loadCSV() {
-  clearError();
-  const urlInput = document.getElementById('csv-url');
-  let url = urlInput.value.trim();
-  if (!url) { showError('Zadej prosím URL tabulky.'); return; }
-
-  // Auto-fix common mistake: pubhtml instead of pub?output=csv
-  if (url.endsWith('/pubhtml')) {
-    url = url.replace('/pubhtml', '/pub?output=csv');
-    urlInput.value = url;
-  }
-  if (!url.includes('output=csv') && !url.includes('script.google.com')) {
-    url = url.includes('?') ? url + '&output=csv' : url + '?output=csv';
-    urlInput.value = url;
-  }
-
-  localStorage.setItem(STORAGE_URL_KEY, url);
-  setStatus('loading', 'Načítám data…');
-
-  try {
-    const text = await fetchWithFallback(url);
-    parseAndRender(text);
-  } catch(e) {
-    setStatus('err', 'Chyba při načítání');
-    showError('Nepodařilo se načíst tabulku. Zkontroluj, že je publikovaná jako CSV (Soubor → Sdílet → Publikovat na webu → CSV). (' + e.message + ')');
-  }
-}
-
-function parseAndRender(csvText) {
-  const lines = csvText.trim().split('\n').filter(l => l.trim());
-  if (lines.length < 2) { showError('Tabulka je prázdná nebo má špatný formát.'); setStatus('err', 'Prázdná tabulka'); return; }
-
-  const header = lines[0].split(',').map(s => s.trim().toLowerCase());
-  const dateIdx = header.findIndex(h => h.includes('datum') || h.includes('date') || h === 'den') >= 0
-    ? header.findIndex(h => h.includes('datum') || h.includes('date') || h === 'den') : 0;
-  // Second column = first player, third column = second player (fallback to position)
-  let tyIdx = header.findIndex(h => h === 'ty' || h === 't' || h.includes('já') || h.includes('ja'));
-  if (tyIdx < 0) tyIdx = 1;
-  let petrIdx = header.findIndex(h => h.includes('petr') || h === 'p');
-  if (petrIdx < 0) petrIdx = 2;
-
-  if (lines[0].split(',').length < 3) {
-    showError('Tabulka musí mít alespoň 3 sloupce: Datum, Ty, Petr.');
-    setStatus('err', 'Špatný formát tabulky');
-    return;
-  }
-
-  const records = {};
-  let startDate = null;
-
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(',').map(s => s.trim());
-    const rawDate = cols[dateIdx];
-    if (!rawDate) continue;
-    const d = new Date(rawDate);
-    if (isNaN(d)) continue;
-    d.setHours(0,0,0,0);
-    if (!startDate || d < startDate) startDate = d;
-
-    const k = dateKey(d);
-    const tv = normalize(cols[tyIdx]);
-    const pv = normalize(cols[petrIdx]);
-    records[k] = { t: tv, p: pv };
-  }
-
-  if (!startDate) { showError('Nepodařilo se rozpoznat datum. Zkontroluj formát (RRRR-MM-DD).'); setStatus('err', 'Chyba formátu'); return; }
-
-  setStatus('ok', 'Data načtena · ' + (lines.length - 1) + ' záznamů');
-  document.getElementById('btn-refresh').style.display = 'inline-block';
-  document.getElementById('last-update').textContent = 'Aktualizováno: ' + new Date().toLocaleTimeString('cs-CZ');
-  renderDashboard(records, startDate);
-}
-
-function normalize(val) {
-  if (!val) return null;
-  const v = val.toLowerCase().trim();
-  if (['1','ano','yes','✓','ok','clean','ne','bez','čistý','cisty'].includes(v)) return 'clean';
-  if (['0','ne','no','✗','x','cheat','sladke','sladké','prohresek','prohřešek'].includes(v)) return 'cheat';
+function parseDate(str) {
+  str = (str || '').replace(/"/g,'').trim();
+  let m;
+  if ((m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)))
+    return new Date(+m[1], +m[2]-1, +m[3]);
+  if ((m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)))
+    return new Date(+m[3], +m[1]-1, +m[2]);
+  if ((m = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/)))
+    return new Date(+m[3], +m[2]-1, +m[1]);
   return null;
 }
 
-function calcStats(records, startDate, who) {
-  const t = today();
-  let clean = 0, cheat = 0, missing = 0, streak = 0, curStreak = 0;
-  for (let i = 0; i < DAYS; i++) {
-    const d = new Date(startDate);
-    d.setDate(d.getDate() + i);
-    if (d > t) break;
-    const k = dateKey(d);
-    const val = records[k] ? records[k][who] : null;
-    if (val === 'clean') { clean++; curStreak++; streak = Math.max(streak, curStreak); }
-    else if (val === 'cheat') { cheat++; curStreak = 0; }
-    else { missing++; curStreak = 0; }
-  }
-  const total = clean + cheat;
-  const pct = total > 0 ? Math.round(clean / total * 100) : null;
-  return { clean, cheat, missing, streak: curStreak, pct };
+function dateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-function renderDashboard(records, startDate) {
-  const t = today();
-  const idx = daysBetween(startDate, t);
-  const dayNum = Math.min(idx + 1, DAYS);
-  const daysLeft = Math.max(DAYS - dayNum, 0);
-  const pct = Math.min(Math.round((dayNum / DAYS) * 100), 100);
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = parseLine(lines[0]);
+  const p1Name = headers[1] || 'Ty';
+  const p2Name = headers[2] || 'Petr';
 
-  document.getElementById('header-sub').textContent =
-    'Začalo ' + startDate.toLocaleDateString('cs-CZ', {day:'numeric',month:'long',year:'numeric'}) +
-    ' · dnes je den ' + dayNum;
+  const rows = lines.slice(1).map(line => {
+    const v = parseLine(line);
+    const date = parseDate(v[0]);
+    if (!date) return null;
+    return { date, key: dateKey(date), p1: (v[1]||'').trim(), p2: (v[2]||'').trim() };
+  }).filter(Boolean);
 
-  document.getElementById('s-day').textContent = dayNum;
-  document.getElementById('s-left').textContent = daysLeft;
-  document.getElementById('s-pct').textContent = pct + ' %';
-  document.getElementById('progress-fill').style.width = pct + '%';
-
-  const ts = calcStats(records, startDate, 't');
-  const ps = calcStats(records, startDate, 'p');
-
-  document.getElementById('s-t-streak').textContent = ts.streak;
-  document.getElementById('s-p-streak').textContent = ps.streak;
-
-  for (const [who, stats, id] of [['t', ts, 't'], ['p', ps, 'p']]) {
-    document.getElementById(id+'-clean').textContent = stats.clean;
-    document.getElementById(id+'-cheat').textContent = stats.cheat;
-    document.getElementById(id+'-missing').textContent = stats.missing;
-    document.getElementById(id+'-pct').textContent = stats.pct !== null ? stats.pct + ' % úspěšnost' : 'zatím bez záznamu';
-    document.getElementById(id+'-streak-txt').textContent = stats.streak > 0 ? stats.streak + ' dní v řadě' : 'žádná série';
-  }
-
-  if (ts.clean > ps.clean) document.getElementById('card-t').classList.add('leading');
-  else if (ps.clean > ts.clean) document.getElementById('card-p').classList.add('leading');
-
-  renderCalendar(records, startDate, t);
-  document.getElementById('main-content').classList.remove('hidden');
+  return { p1Name, p2Name, rows };
 }
 
-function renderCalendar(records, startDate, t) {
-  const cal = document.getElementById('calendar');
-  cal.innerHTML = '';
-  for (let i = 0; i < DAYS; i++) {
-    const d = new Date(startDate);
-    d.setDate(d.getDate() + i);
-    const k = dateKey(d);
-    const isFuture = d > t;
-    const isToday = k === dateKey(t);
-    const rec = records[k];
-    const tv = rec ? rec.t : null;
-    const pv = rec ? rec.p : null;
+// ─── Statistics ──────────────────────────────────────────────────────────────
+function stats(rows, playerKey, today) {
+  let clean = 0, fail = 0, streak = 0, inStreak = true;
 
-    const el = document.createElement('div');
-    el.className = 'cal-day';
-    if (!isFuture) {
-      if (tv === 'cheat' || pv === 'cheat') el.classList.add('has-cheat');
-      else if (tv === 'clean' && pv === 'clean') el.classList.add('both-clean');
-      else if (tv === 'clean' || pv === 'clean') el.classList.add('one-clean');
+  // Go backwards from today to compute streak
+  const past = rows.filter(r => r.date < today).sort((a,b) => b.date - a.date);
+  for (const r of past) {
+    if (r[playerKey] === '1') { if (inStreak) streak++; clean++; }
+    else { inStreak = false; fail++; }
+  }
+  const total = clean + fail;
+  return { clean, fail, streak, rate: total > 0 ? Math.round(clean/total*100) : null };
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+function render({ p1Name, p2Name, rows }) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayKey = dateKey(today);
+
+  const totalDays = rows.length;
+  const challengeDay = rows.filter(r => r.date <= today).length;
+  const daysLeft     = rows.filter(r => r.date > today).length;
+  const progress     = totalDays > 0 ? Math.round(challengeDay / totalDays * 100) : 0;
+
+  const s1 = stats(rows, 'p1', today);
+  const s2 = stats(rows, 'p2', today);
+
+  const dayName  = DAYS_CS[today.getDay()];
+  const dateStr  = `${today.getDate()}. ${MONTHS_CS[today.getMonth()]}`;
+
+  document.getElementById('app').className = '';
+  document.getElementById('app').innerHTML = `
+    <header>
+      <h1>🥗 Bez sladkého — ${totalDays} dní</h1>
+      <div class="subtitle">Dnes: ${dayName} ${dateStr}</div>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">Zbývá dnů</div>
+        <div class="value">${daysLeft}</div>
+        <div class="sub">do konce výzvy</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Den výzvy</div>
+        <div class="value">${challengeDay}</div>
+        <div class="sub">z ${totalDays}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">${p1Name} — čistých dnů</div>
+        <div class="value">${s1.clean}</div>
+        <div class="streak">${s1.streak > 0 ? `🔥 série ${s1.streak} dní` : 'zatím bez série'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">${p2Name} — čistých dnů</div>
+        <div class="value">${s2.clean}</div>
+        <div class="streak">${s2.streak > 0 ? `🔥 série ${s2.streak} dní` : 'zatím bez série'}</div>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-header">
+        <span>Průběh výzvy</span>
+        <span>${progress} %</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${progress}%"></div>
+      </div>
+    </div>
+
+    <div class="players-grid">
+      ${playerCard(p1Name, s1, `Označit svůj dnešek`)}
+      ${playerCard(p2Name, s2, `Označit ${p2Name}ův dnešek`)}
+    </div>
+
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <h2>Přehled — ${totalDays} dní</h2>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> oba čistí</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green-light)"></div> jeden čistý</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> prohřešek</div>
+        </div>
+      </div>
+      <div class="calendar-grid">
+        ${rows.map((r,i) => dayCell(r, i+1, today, todayKey)).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function playerCard(name, s, btnLabel) {
+  const rateText = s.rate !== null ? `${s.rate} % úspěšnost` : 'zatím bez záznamu';
+  const initials = name.substring(0,2).toUpperCase();
+  return `
+    <div class="player-card">
+      <div class="player-header">
+        <div class="avatar">${initials}</div>
+        <div>
+          <div class="player-name">${name}</div>
+          <div class="player-rate">${rateText}</div>
+        </div>
+      </div>
+      <div class="player-stats">
+        <div>
+          <div class="pstat-val">${s.clean}</div>
+          <div class="pstat-lbl">bez sladkého</div>
+        </div>
+        <div>
+          <div class="pstat-val ${s.fail > 0 ? 'red' : ''}">${s.fail}</div>
+          <div class="pstat-lbl">prohřešků</div>
+        </div>
+        <div>
+          <div class="pstat-val">${s.streak}</div>
+          <div class="pstat-lbl">série dnů</div>
+        </div>
+      </div>
+      <a href="${SHEET_URL}" target="_blank" class="btn">⊙ ${btnLabel}</a>
+    </div>
+  `;
+}
+
+function dayCell(row, n, today, todayKey) {
+  let cls = 'day';
+  if (row.key === todayKey) {
+    cls += ' today';
+  } else if (row.date < today) {
+    const b1 = row.p1 === '1', b2 = row.p2 === '1';
+    if (b1 && b2) cls += ' both';
+    else if (b1 || b2) cls += ' one';
+    else cls += ' fail';
+  }
+  return `<div class="${cls}">${n}</div>`;
+}
+
+// ─── Error screen ─────────────────────────────────────────────────────────────
+function showError(msg) {
+  document.getElementById('app').className = 'error';
+  document.getElementById('app').innerHTML = `
+    <div class="error-box">
+      <h2>⚠️ Chyba načítání</h2>
+      <p>${msg}</p>
+      <p style="margin-top:12px">
+        Zkontrolujte:<br>
+        1. <code>SHEET_ID</code> v kódu stránky<br>
+        2. Sheet je sdílen jako <em>Kdokoli s odkazem může zobrazit</em><br>
+        3. Sheet je publikován: <em>Soubor → Sdílet → Publikovat na webu → CSV</em>
+      </p>
+    </div>
+  `;
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
+async function main() {
+  if (SHEET_ID === 'YOUR_SHEET_ID_HERE') {
+    showError('Nevyplněno <code>SHEET_ID</code>. Otevřete <code>index.html</code> a doplňte ID vašeho Google Sheetu.');
+    return;
+  }
+  try {
+    const resp = await fetch(CSV_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text = await resp.text();
+    if (text.includes('UNAUTHENTICATED') || text.includes('Sign in')) {
+      throw new Error('Sheet není veřejně přístupný.');
     }
-    if (isToday) el.classList.add('is-today');
-
-    const tIcon = tv === 'clean' ? '✓' : tv === 'cheat' ? '✗' : '·';
-    const pIcon = pv === 'clean' ? '✓' : pv === 'cheat' ? '✗' : '·';
-
-    el.innerHTML = '<div class="day-num">' + (i+1) + '</div>' +
-      (!isFuture ? '<div class="day-icons">' + tIcon + pIcon + '</div>' : '');
-    el.title = 'Den ' + (i+1) + ' — ' + d.toLocaleDateString('cs-CZ') +
-      '\nTy: ' + (tv||'—') + '  Petr: ' + (pv||'—');
-    cal.appendChild(el);
+    render(parseCSV(text));
+  } catch (e) {
+    showError(`Nepodařilo se načíst data. ${e.message}`);
   }
 }
 
-const savedUrl = localStorage.getItem(STORAGE_URL_KEY);
-if (savedUrl) {
-  document.getElementById('csv-url').value = savedUrl;
-  loadCSV();
-}
+main();
 </script>
-
 </body>
 </html>
