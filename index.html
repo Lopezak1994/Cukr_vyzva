@@ -167,7 +167,10 @@
     .day.fail        { background: #fde8e8; color: var(--red); }
     .day.today       { background: #fff; color: var(--text); border: 2.5px solid var(--today); font-weight: 700; }
     .day.finish      { background: #fff8e6; color: var(--finish); border: 2.5px solid var(--finish); font-weight: 700; }
+    .day.weekend     { background: #f0ebe3; color: #bbb; font-size: 0.8rem; }
+    .day.weekend-today { background: #fff; color: var(--muted); border: 2px dashed var(--today); }
     .day .day-emoji  { font-size: 0.6rem; line-height: 1; margin-top: 1px; }
+    .day .we-label   { font-size: 0.5rem; color: #bbb; line-height: 1; margin-top: 1px; letter-spacing: 0.02em; }
 
     /* ── Loading / error ─────────────────────────────────── */
     #app.loading { text-align: center; padding: 80px 0; color: var(--muted); font-size: 1.1rem; }
@@ -275,10 +278,19 @@ function parseCSV(text) {
   return { p1Name, p2Name, rows };
 }
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function isWeekend(date) {
+  const d = date.getDay();
+  return d === 0 || d === 6; // 0=neděle, 6=sobota
+}
+
 // ─── Statistics ───────────────────────────────────────────────────────────────
 function calcStats(rows, playerKey, today) {
   let clean = 0, fail = 0, streak = 0, inStreak = true;
-  const past = rows.filter(r => r.date < today).sort((a,b) => b.date - a.date);
+  // Pouze pracovní dny před dneškem, seřazené od nejnovějšího
+  const past = rows
+    .filter(r => r.date < today && !isWeekend(r.date))
+    .sort((a, b) => b.date - a.date);
   for (const r of past) {
     if (r[playerKey] === '1') { if (inStreak) streak++; clean++; }
     else { inStreak = false; fail++; }
@@ -330,6 +342,16 @@ function renderMonth(monthStart, dataMap, today, todayKey, challengeStart, chall
 
     if (key === finishKey) {
       cells += `<div class="day finish" title="Konec výzvy — dnes si dáme sladké!">${d}<span class="day-emoji">🎉</span></div>`;
+      continue;
+    }
+
+    // Víkend — povoleno
+    if (isWeekend(date)) {
+      if (key === todayKey) {
+        cells += `<div class="day weekend-today">${d}<span class="we-label">volno</span></div>`;
+      } else {
+        cells += `<div class="day weekend">${d}<span class="we-label">volno</span></div>`;
+      }
       continue;
     }
 
@@ -440,6 +462,7 @@ function render({ p1Name, p2Name, rows }) {
         <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> oba čistí</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--green-light); border:1px solid #ccc"></div> jeden čistý</div>
         <div class="legend-item"><div class="legend-dot" style="background:#fde8e8; border:1px solid var(--red)"></div> prohřešek</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0ebe3; border:1px solid #ccc"></div> víkend (volno)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#fff8e6; border:1px solid var(--finish)"></div> 🎉 konec výzvy</div>
       </div>
       <div class="months-grid">
