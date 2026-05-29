@@ -390,9 +390,9 @@ function render({ p1Name, p2Name, rows }) {
   const today    = new Date(); today.setHours(0,0,0,0);
   const todayKey = dateKey(today);
 
-  const totalDays    = rows.length;
-  const challengeDay = rows.filter(r => r.date <= today).length;
-  const daysLeft     = rows.filter(r => r.date > today).length;
+  const totalDays    = rows.filter(r => !isWeekend(r.date)).length;
+  const challengeDay = rows.filter(r => r.date <= today && !isWeekend(r.date)).length;
+  const daysLeft     = rows.filter(r => r.date > today && !isWeekend(r.date)).length;
   const progress     = totalDays > 0 ? Math.round(challengeDay / totalDays * 100) : 0;
 
   const s1 = calcStats(rows, 'p1', today);
